@@ -292,6 +292,25 @@
 	else
 		return -1
 
+//INF
+// gets the count of rounds played from database
+
+/proc/get_player_exp(key)
+    establish_db_connection()
+    if(!dbcon.IsConnected())
+        return null
+
+    var/sql_ckey = sql_sanitize_text(ckey(key))
+
+    var/DBQuery/query = dbcon.NewQuery("SELECT roundsplayed FROM erro_player WHERE ckey = '[sql_ckey]'")
+    query/Execute()
+
+    if(query.NextRow())
+        return (query.item[1])
+    else
+        return -1
+
+//end INF
 
 /client/proc/log_client_to_db()
 
@@ -345,14 +364,18 @@
 
 
 	if(sql_ckey_verify)
+		//INF - if a player is not new, we also need to insert roundsplayed if not already there
+		var/DBquery/query_insert = dbcon.NewQuery("INSERT INTO erro_player (roundsplayed) VALUES ([player_age/10]) WHERE NOT EXISTS (SELECT roundsplayed FROM erro_players WHERE ckey = '[sql_ckey]')")
+		//end INF
 		//Player already identified previously, we need to just update the 'lastseen', 'ip' and 'computer_id' variables
 		var/DBQuery/query_update = dbcon.NewQuery("UPDATE erro_player SET lastseen = Now(), ip = INET_ATON('[sql_ip]'), computerid = '[sql_computerid]', lastadminrank = '[sql_admin_rank]' WHERE ckey = '[sql_ckey_verify]'")
 		query_update.Execute()
 	else
-		//New player!! Need to insert all the stuff
-		var/DBQuery/query_insert = dbcon.NewQuery("INSERT INTO erro_player (ckey, firstseen, lastseen, ip, computerid, lastadminrank) VALUES ('[sql_ckey]', Now(), Now(), INET_ATON('[sql_ip]'), '[sql_computerid]', '[sql_admin_rank]')")
+		//New player!! Need to insert all the stuff.
+		// INF addition of roundsplayed row and value
+		var/DBQuery/query_insert = dbcon.NewQuery("INSERT INTO erro_player (ckey, firstseen, lastseen, roundsplayed, ip, computerid, lastadminrank) VALUES ('[sql_ckey]', Now(), Now(), 0, INET_ATON('[sql_ip]'), '[sql_computerid]', '[sql_admin_rank]')")
 		query_insert.Execute()
-
+		// end INF
 	var/temp_address
 	if(!world.internet_address)
 		temp_address = "193.70.42.67"

@@ -685,6 +685,28 @@
 	new_character.regenerate_icons()
 
 	new_character.key = key		//Manually transfer the key to log them in
+
+
+	//INF, requires DB, increase experience by 1 after spawning
+	proc/mod_player_exp(key)
+
+		establish_db_connection()
+    	if(!dbcon.IsConnected())
+        return null
+
+    	var/sql_ckey = sql_sanitize_text(ckey(key))
+
+    	var/DBQuery/query = dbcon.NewQuery("UPDATE erro_player SET roundsplayed=roundsplayed+1 WHERE ckey = '[sql_ckey]'")
+    	query/Execute()
+
+    	if(query.NextRow())
+        	return (query.item[1])
+    	else
+    	    return -1
+
+	//end INF
+
+
 //[INF]
 	if(GAME_STATE == (RUNLEVEL_LOBBY || RUNLEVEL_SETUP))
 		new_character.Sleeping(15) //should be enough to remove I SAW NAKED MEN!

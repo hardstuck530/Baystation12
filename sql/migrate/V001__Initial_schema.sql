@@ -100,12 +100,14 @@ CREATE TABLE IF NOT EXISTS `erro_feedback` (
 --
 -- Table structure for table `erro_player`
 --
+-- INF addition of roundsplayed
 
 CREATE TABLE IF NOT EXISTS `erro_player` (
   `id` int(11) NOT NULL,
   `ckey` varchar(32) NOT NULL,
   `firstseen` datetime NOT NULL,
   `lastseen` datetime NOT NULL,
+  `playerexp` int NOT NULL,
   `ip` varchar(18) NOT NULL,
   `computerid` varchar(32) NOT NULL,
   `lastadminrank` varchar(32) NOT NULL DEFAULT 'Player'

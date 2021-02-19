@@ -686,9 +686,6 @@
 
 	new_character.key = key		//Manually transfer the key to log them in
 
-	//INF, requires DB, increase experience by 1 after spawning if its first spawn per round
-	give_player_exp(key)
-
 
 	//INF, requires DB, increase experience by 1 after spawning if this is the first spawn per round
 	proc/give_player_exp(key)

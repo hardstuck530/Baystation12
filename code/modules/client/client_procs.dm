@@ -364,8 +364,11 @@
 
 
 	if(sql_ckey_verify)
-		//INF - if a player is not new, we also need to insert roundsplayed if not already there
-		var/DBquery/query_insert = dbcon.NewQuery("INSERT INTO erro_player (roundsplayed) VALUES ([player_age/10]) WHERE NOT EXISTS (SELECT roundsplayed FROM erro_players WHERE ckey = '[sql_ckey]')")
+		//INF - if a player is not new, we also need to insert roundsplayed and last_round_id if not already there. Transition functionality, do not use if setting up new DB
+		var/DBQuery/query_insert = dbcon.NewQuery("INSERT INTO erro_player (roundsplayed) VALUES ('[player_age/10]') WHERE NOT EXISTS (SELECT roundsplayed FROM erro_players WHERE ckey = '[sql_ckey]')")
+		query_insert.Execute ()
+		var/DBQuery/query_insert = dbcon.NewQuery("INSERT INTO erro_player (last_round_id) VALUES ('[game_id]') WHERE NOT EXISTS (SELECT last_round_id FROM erro_players WHERE ckey = '[sql_ckey]')")
+		query_insert.Execute ()
 		//end INF
 		//Player already identified previously, we need to just update the 'lastseen', 'ip' and 'computer_id' variables
 		var/DBQuery/query_update = dbcon.NewQuery("UPDATE erro_player SET lastseen = Now(), ip = INET_ATON('[sql_ip]'), computerid = '[sql_computerid]', lastadminrank = '[sql_admin_rank]' WHERE ckey = '[sql_ckey_verify]'")

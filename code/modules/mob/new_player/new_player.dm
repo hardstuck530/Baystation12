@@ -711,7 +711,7 @@
 		if(!dbcon.IsConnected())
 			return
 
-		var/DBQuery/query = dbcon.NewQuery("REPLACE erro_player SET last_round_id='[game_id]' WHERE ckey = '[sql_ckey]'")
+		var/DBQuery/query = dbcon.NewQuery("UPDATE erro_player SET last_round_id='[game_id]' WHERE ckey = '[sql_ckey]'")
 		query.Execute()
 
 	//end INF

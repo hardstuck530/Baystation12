@@ -303,7 +303,7 @@
     var/sql_ckey = sql_sanitize_text(ckey(key))
 
     var/DBQuery/query = dbcon.NewQuery("SELECT roundsplayed FROM erro_player WHERE ckey = '[sql_ckey]'")
-    query/Execute()
+    query.Execute()
 
     if(query.NextRow())
         return (query.item[1])

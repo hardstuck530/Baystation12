@@ -100,14 +100,15 @@ CREATE TABLE IF NOT EXISTS `erro_feedback` (
 --
 -- Table structure for table `erro_player`
 --
--- INF addition of roundsplayed
+-- INF addition of roundsplayed and last_round_id (id of last round player spawned into)
 
 CREATE TABLE IF NOT EXISTS `erro_player` (
   `id` int(11) NOT NULL,
   `ckey` varchar(32) NOT NULL,
   `firstseen` datetime NOT NULL,
   `lastseen` datetime NOT NULL,
-  `roundsplayed` int NOT NULL,
+  `roundsplayed` int NOT NULL DEFAULT '0',
+  `last_round_id` varchar(8) NOT NULL,
   `ip` varchar(18) NOT NULL,
   `computerid` varchar(32) NOT NULL,
   `lastadminrank` varchar(32) NOT NULL DEFAULT 'Player'

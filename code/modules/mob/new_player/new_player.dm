@@ -686,23 +686,36 @@
 
 	new_character.key = key		//Manually transfer the key to log them in
 
+	//INF, requires DB, increase experience by 1 after spawning if its first spawn per round
+	give_player_exp(key)
 
-	//INF, requires DB, increase experience by 1 after spawning
-	proc/mod_player_exp(key)
 
+	//INF, requires DB, increase experience by 1 after spawning if this is the first spawn per round
+	proc/give_player_exp(key)
+		sleep(rand(100,600))// to reduce load on DB at roundstart.
 		establish_db_connection()
     	if(!dbcon.IsConnected())
-        return null
-
+        	return
     	var/sql_ckey = sql_sanitize_text(ckey(key))
 
-    	var/DBQuery/query = dbcon.NewQuery("UPDATE erro_player SET roundsplayed=roundsplayed+1 WHERE ckey = '[sql_ckey]'")
-    	query/Execute()
-
-    	if(query.NextRow())
+		var/DBQuery/query = dbcon.NewQuery("SELECT last_round_id FROM erro_player WHERE ckey = '[sql_ckey]'")
+		query.Execute()
+		if(query.NextRow())
         	return (query.item[1])
     	else
-    	    return -1
+        	return -1
+
+		if (query != game_id)
+    		var/DBQuery/query = dbcon.NewQuery("UPDATE erro_player SET roundsplayed=roundsplayed+1 WHERE ckey = '[sql_ckey]'")
+    		query.Execute()
+
+	proc/set_last_round_id(key)
+		establish_db_connection()
+		if(!dbcon.IsConnected())
+			return
+
+		var/DBQuery/query = dbcon.NewQuery("REPLACE erro_player SET last_round_id='[game_id]' WHERE ckey = '[sql_ckey]'")
+		query.Execute()
 
 	//end INF
 

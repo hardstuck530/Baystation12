@@ -375,8 +375,8 @@
 		query_update.Execute()
 	else
 		//New player!! Need to insert all the stuff.
-		// INF addition of roundsplayed row and value
-		var/DBQuery/query_insert = dbcon.NewQuery("INSERT INTO erro_player (ckey, firstseen, lastseen, roundsplayed, ip, computerid, lastadminrank) VALUES ('[sql_ckey]', Now(), Now(), 0, INET_ATON('[sql_ip]'), '[sql_computerid]', '[sql_admin_rank]')")
+		// INF addition of roundsplayed, last_round_id row and value
+		var/DBQuery/query_insert = dbcon.NewQuery("INSERT INTO erro_player (ckey, firstseen, lastseen, roundsplayed, last_round_id, ip, computerid, lastadminrank) VALUES ('[sql_ckey]', Now(), Now(), 0, 'none', INET_ATON('[sql_ip]'), '[sql_computerid]', '[sql_admin_rank]')")
 		query_insert.Execute()
 		// end INF
 	var/temp_address

@@ -702,7 +702,7 @@
     	else
         	return -1
 
-		if (query != game_id)
+		if (var/DBQuery/query != game_id)
     		var/DBQuery/query = dbcon.NewQuery("UPDATE erro_player SET roundsplayed=roundsplayed+1 WHERE ckey = '[sql_ckey]'")
     		query.Execute()
 

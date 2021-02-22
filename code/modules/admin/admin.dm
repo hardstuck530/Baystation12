@@ -85,6 +85,7 @@ var/global/floorIsLava = 0
 	body += "<br>\[<b>Client [M.client ? "On" : "Off"]line</b>\]"
 	body += "<br>\[<b>Ckey:</b> [M.client ? M.client.ckey : M.ckey]\]"
 	body += "<br>\[<b>Client Age:</b> [M.client ? "[M.client.player_age] days" : "Logged out"]\]"
+	body += "<br>\[<b>Rounds Played: </b> [M.client ? "[M.client.roundsplayed] rounds" : "Logged out"]\]"
 	body += "<br>\[<b>Client Gender:</b> [M.client ? M.client.gender : "Logged out"]\]"
 	body += "<br>\[<b>CID:</b> [M.client ?  M.client.computer_id : M.computer_id]\]"
 	body += "<br>\[<b>CID Related Accounts:</b> [M.client ? M.client.related_accounts_cid : "Logged out"]\]"
@@ -356,6 +357,15 @@ var/global/floorIsLava = 0
 			p_age = C.player_age
 			break
 	dat += "<b>Player age: [p_age]</b><br><ul id='notes'>"
+
+	//INF maybe warrants a second look
+	var/rds_played = "unknown"
+	for(var/client/C in GLOB.clients)
+		if(C.ckey == key)
+			rds_played = C.roundsplayed
+			break
+	dat += "<b>Rounds played: [rds_played]</b><br><ul id='notes'>"
+       //END INF
 
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos

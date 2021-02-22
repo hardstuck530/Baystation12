@@ -58,6 +58,17 @@
 
 				entry += " - [age]"
 
+			
+			if (isnum(C.roundsplayed))
+				var/roundsplayed = C.roundsplayed
+				
+				if(roundsplayed <= 1)
+					roundsplayed = 
+				else if (roundsplayed < 10)
+					roundsplayed = 
+				
+				entry += " - [roundsplayed]"
+
 			if(is_special_character(C.mob))
 				entry += " - <b><font color='red'>Антагонист</font></b>"
 				if(!C.mob.mind.current || C.mob.mind.current?.stat == DEAD)
